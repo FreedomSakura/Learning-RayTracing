@@ -80,6 +80,8 @@ CREDITS:
 #ifndef INCLUDE_STB_IMAGE_WRITE_H
 #define INCLUDE_STB_IMAGE_WRITE_H
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+
 #ifdef __cplusplus
 extern "C" {
 #endif
