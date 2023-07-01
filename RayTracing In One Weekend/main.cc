@@ -23,7 +23,8 @@
 #include <omp.h>
 
 #include <iostream>
-
+#include <chrono>
+#include <fstream>
 
 
 color ray_color(const ray& r, const hittable& world, int depth) {
@@ -137,6 +138,9 @@ int main() {
     // 使用omp多线程框架
     int nthreads, tid;
 
+    // 计时模块
+    auto start = std::chrono::high_resolution_clock::now();
+
 #pragma omp parallel private(tid)
     {
 		for (int j = 0; j < image_height; j++) {
@@ -158,6 +162,17 @@ int main() {
 		}
     }
     std::cerr << "\nDone.\n";
+
+    // 结束计时，并将结果写入文件
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<float> duration = end - start;
+    std::ofstream outFile;
+    outFile.open("clock.txt");
+    outFile << "本次用时为：" << duration.count() << std::endl;
+    outFile << "sample: " << samples_per_pixel << std::endl;
+    outFile.close();
+
+
 
     // stride_btye = 一行的比特数
     stbi_write_png("./output/motion-blur/output1.png", image_width, image_height, 3, data, image_width * 3);
