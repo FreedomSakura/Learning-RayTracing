@@ -63,6 +63,9 @@
     <ClInclude Include="moving_sphere.h">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="bvh.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cc">
