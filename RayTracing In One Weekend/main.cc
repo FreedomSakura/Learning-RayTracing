@@ -112,7 +112,7 @@ int main() {
     const auto aspect_ratio = 16.0 / 9.0;
     const int image_width = 400;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 10;
+    const int samples_per_pixel = 100;
     const int max_depth = 50;
 
     // World
@@ -169,9 +169,11 @@ int main() {
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<float> duration = end - start;
     std::ofstream outFile;
-    outFile.open("clock.txt");
+    outFile.open("clock.txt", std::ios::out | std::ios::app);
+    outFile << "AABB优化！！" << std::endl;
     outFile << "本次用时为：" << duration.count() << std::endl;
     outFile << "sample: " << samples_per_pixel << std::endl;
+    outFile << std::endl;
     outFile.close();
 
 
