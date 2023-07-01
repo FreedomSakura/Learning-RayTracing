@@ -101,11 +101,10 @@ int main() {
     const auto aspect_ratio = 16.0 / 9.0;
     const int image_width = 1200;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 1000;
+    const int samples_per_pixel = 3;
     const int max_depth = 50;
 
     // World
-
     auto world = random_scene();
 
     // Camera
@@ -113,7 +112,8 @@ int main() {
     point3 lookfrom(13,2,3);
     point3 lookat(0,0,0);
     vec3 vup(0,1,0);
-    auto dist_to_focus = 10.0;
+    auto dist_to_focus = (lookfrom - lookat).length();
+    //auto dist_to_focus = 10.0;
     auto aperture = 0.1;
 
     camera cam(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus);
@@ -151,9 +151,8 @@ int main() {
     }
     std::cerr << "\nDone.\n";
 
-	//stbi_write_tga("./output/output.tga", image_width, image_height, 3, data);
     // stride_btye = 一行的比特数
-    stbi_write_png("./output/output.png", image_width, image_height, 3, data, image_width * 3);
+    stbi_write_png("./output/output_depth_test_1.png", image_width, image_height, 3, data, image_width * 3);
 
     delete[] color_ptr;
     delete[] data;
