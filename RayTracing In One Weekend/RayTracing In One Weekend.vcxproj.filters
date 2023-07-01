@@ -60,6 +60,9 @@
     <ClInclude Include="stb_image_write.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="moving_sphere.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cc">
