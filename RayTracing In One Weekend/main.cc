@@ -37,7 +37,6 @@ color ray_color(const ray& r, const vec3& background, const hittable& world, int
     hit_record rec;
 
     // If we've exceeded the ray bounce limit, no more light is gathered.
-    // 这里和阴影无关
 	if (depth <= 0)
 		return color(0, 0, 0);
 
@@ -48,11 +47,15 @@ color ray_color(const ray& r, const vec3& background, const hittable& world, int
     ray scattered;
     color attenuation;
     color emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
-    if (rec.mat_ptr->scatter(r, rec, attenuation, scattered))
+    if (!rec.mat_ptr->scatter(r, rec, attenuation, scattered))
         return emitted;
 
+    // 主要是这里
+    // 很好理解，如果depth = 0，也就是在光源处，光最强烈, 并且light的emitted恒定返回光源颜色，color = emitted
+    // 而后续的球体和地板的emitted则因为其不会发光，返回的是vec3（0,0,0)，所以需要和不断衰减的光线相加，就这样。
     return emitted + attenuation * ray_color(scattered, background, world, depth - 1);
 }
+
 
 // 读取一下地球贴图！
 //hittable_list earth() {
@@ -161,8 +164,8 @@ int main() {
     auto world = simple_light();
 
     // Camera
-    point3 lookfrom(13,2,3);
-    point3 lookat(0,0,0);
+    point3 lookfrom(15,2,15);
+    point3 lookat(0,2,0);
     vec3 vup(0,1,0);
     //auto dist_to_focus = (lookfrom - lookat).length();
     auto dist_to_focus = 10.0;
