@@ -54,7 +54,14 @@ color ray_color(const ray& r, const hittable& world, int depth) {
 hittable_list random_scene() {
     hittable_list world;
 
-    auto ground_material = make_shared<lambertian>(color(0.5, 0.5, 0.5));
+    // 使用纹理
+    auto checker = make_shared<checker_texture>(
+        make_shared<constant_texture>(vec3(0.2, 0.3, 0.1)),
+        make_shared<constant_texture>(vec3(0.9, 0.9, 0.9))
+    );
+    auto ground_material = make_shared<lambertian>(checker);
+
+
     world.add(make_shared<sphere>(point3(0,-1000,0), 1000, ground_material));
 
     for (int a = -11; a < 11; a++) {
@@ -68,7 +75,8 @@ hittable_list random_scene() {
                 if (choose_mat < 0.8) {
                     // diffuse
                     auto albedo = color::random() * color::random();
-                    sphere_material = make_shared<lambertian>(albedo);
+                    auto texture = make_shared<constant_texture>(albedo);
+                    sphere_material = make_shared<lambertian>(texture);
                     // 静止
                     world.add(make_shared<sphere>(center, 0.2, sphere_material));
 
@@ -94,7 +102,8 @@ hittable_list random_scene() {
     auto material1 = make_shared<dielectric>(1.5);
     world.add(make_shared<sphere>(point3(0, 1, 0), 1.0, material1));
 
-    auto material2 = make_shared<lambertian>(color(0.4, 0.2, 0.1));
+    auto texture2 = make_shared<constant_texture>(color(0.4, 0.2, 0.1));
+    auto material2 = make_shared<lambertian>(texture2);
     world.add(make_shared<sphere>(point3(-4, 1, 0), 1.0, material2));
 
     auto material3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.0);
@@ -179,7 +188,7 @@ int main() {
 
 
     // stride_btye = 一行的比特数
-    stbi_write_png("./output/motion-blur/output1.png", image_width, image_height, 3, data, image_width * 3);
+    stbi_write_png("./output/output.png", image_width, image_height, 3, data, image_width * 3);
 
     delete[] color_ptr;
     delete[] data;
