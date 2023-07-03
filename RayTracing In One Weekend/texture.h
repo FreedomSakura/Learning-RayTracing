@@ -125,7 +125,7 @@ public:
             return vec3(0, 1, 1);
 
         auto i = static_cast<int>((u)*nx);
-        auto j = static_cast<int>((1 - v) * ny - 0.001);
+        auto j = static_cast<int>((v) * ny - 0.001);
 
         if (i < 0) i = 0;
         if (j < 0) j = 0;
