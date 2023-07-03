@@ -44,7 +44,8 @@ color ray_color(const ray& r, const hittable& world, int depth) {
         ray scattered;
         color attenuation;
         if (rec.mat_ptr->scatter(r, rec, attenuation, scattered))
-            return attenuation * ray_color(scattered, world, depth-1);
+            //return attenuation * ray_color(scattered, world, depth-1);
+            return attenuation;
         return color(0,0,0);
     }
 
