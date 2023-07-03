@@ -9,7 +9,7 @@
 // along with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 //==============================================================================================
 
-#include "stb_image_write.h"
+
 
 #include "rtweekend.h"
 
@@ -20,6 +20,10 @@
 #include "sphere.h"
 #include "moving_sphere.h"
 #include "bvh.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+#include "stb_image_write.h"
 
 #include <omp.h>
 
@@ -50,16 +54,29 @@ color ray_color(const ray& r, const hittable& world, int depth) {
     return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
 }
 
+// 读取一下地球贴图！
+hittable_list earth() {
+    int nx, ny, nn;
+    unsigned char* texture_data = stbi_load("input/earthmap.jpg", &nx, &ny, &nn, 0);
+
+    auto earth_surface =
+        make_shared<lambertian>(make_shared<image_texture>(texture_data, nx, ny));
+    auto globe = make_shared<sphere>(vec3(0, 0, 0), 2, earth_surface);
+
+    return hittable_list(globe);
+}
+
 // 场景
 hittable_list random_scene() {
     hittable_list world;
 
     // 使用纹理
-    auto checker = make_shared<checker_texture>(
-        make_shared<constant_texture>(vec3(0.2, 0.3, 0.1)),
-        make_shared<constant_texture>(vec3(0.9, 0.9, 0.9))
-    );
-    auto ground_material = make_shared<lambertian>(checker);
+    //auto checker = make_shared<checker_texture>(
+    //    make_shared<constant_texture>(vec3(0.2, 0.3, 0.1)),
+    //    make_shared<constant_texture>(vec3(0.9, 0.9, 0.9))
+    //);
+    auto pertext = make_shared<noise_texture>(10);
+    auto ground_material = make_shared<lambertian>(pertext);
 
 
     world.add(make_shared<sphere>(point3(0,-1000,0), 1000, ground_material));
@@ -125,7 +142,8 @@ int main() {
     const int max_depth = 50;
 
     // World
-    auto world = random_scene();
+    //auto world = random_scene();
+    auto world = earth();
 
     // Camera
 
@@ -179,7 +197,7 @@ int main() {
     std::chrono::duration<float> duration = end - start;
     std::ofstream outFile;
     outFile.open("clock.txt", std::ios::out | std::ios::app);
-    outFile << "AABB优化！！" << std::endl;
+    outFile << "引入图像贴图" << std::endl;
     outFile << "本次用时为：" << duration.count() << std::endl;
     outFile << "sample: " << samples_per_pixel << std::endl;
     outFile << std::endl;
