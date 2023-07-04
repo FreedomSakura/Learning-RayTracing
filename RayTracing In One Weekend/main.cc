@@ -21,6 +21,8 @@
 #include "moving_sphere.h"
 #include "bvh.h"
 #include "xy_rect.h"
+#include "CornellBox.h"
+#include "translate.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -156,12 +158,24 @@ hittable_list cornell_box() {
     auto green = make_shared<lambertian>(make_shared<constant_texture>(vec3(0.12, 0.45, 0.15)));
     auto light = make_shared<diffuse_light>(make_shared<constant_texture>(vec3(15, 15, 15)));
 
+    // 外部盒子
     objects.add(make_shared<yz_rect>(0.0, 555, 0.0, 555, 555, green));
     objects.add(make_shared<yz_rect>(0.0, 555, 0.0, 555, 0.0, red));
     objects.add(make_shared<xz_rect>(213, 343, 227, 332, 554, light));
     objects.add(make_shared<xz_rect>(0.0, 555, 0.0, 555, 0.0, white));
     objects.add(make_shared<xy_rect>(0.0, 555, 0.0, 555, 555, white));
     objects.add(make_shared<xz_rect>(0.0, 555, 0.0, 555, 555, white));
+
+    // 内部的物体
+    shared_ptr<hittable> box1 = make_shared<box>(vec3(0, 0, 0), vec3(165, 330, 165), white);
+    box1 = make_shared<rotate_y>(box1, 15);
+    box1 = make_shared<translate>(box1, vec3(265, 0, 295));
+    objects.add(box1);
+
+    shared_ptr<hittable> box2 = make_shared<box>(vec3(0, 0, 0), vec3(165, 165, 165), white);
+    box2 = make_shared<rotate_y>(box2, -18);
+    box2 = make_shared<translate>(box2, vec3(130, 0, 65));
+    objects.add(box2);
 
     return objects;
 }
@@ -175,7 +189,7 @@ int main() {
     //const int image_height = static_cast<int>(image_width / aspect_ratio);
     const int image_height = 1000;
     const auto aspect_ratio = double(image_width) / image_height;
-    const int samples_per_pixel = 100;
+    const int samples_per_pixel = 1000;
     const int max_depth = 50;
 
     // World
@@ -245,7 +259,7 @@ int main() {
 
 
     // stride_btye = 一行的比特数
-    stbi_write_png("./output/output.png", image_width, image_height, 3, data, image_width * 3);
+    stbi_write_png("./output/cornellbox.png", image_width, image_height, 3, data, image_width * 3);
 
     delete[] color_ptr;
     delete[] data;

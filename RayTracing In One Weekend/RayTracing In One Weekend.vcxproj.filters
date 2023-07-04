@@ -69,9 +69,18 @@
     <ClInclude Include="xy_rect.h">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="translate.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CornellBox.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="translate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
