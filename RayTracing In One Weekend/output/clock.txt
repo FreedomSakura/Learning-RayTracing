@@ -333,3 +333,73 @@ sample: 100
 本次用时为：1837.52
 sample: 1000
 
+地点：公司
+情况：CornellBox 无bvh？
+sample: 10
+本次用时为：32.571
+
+地点：公司
+情况：CornellBox 有bvh？
+sample: 10
+本次用时为：31.856
+
+地点：公司
+情况：random_scene no bvh
+sample: 10
+本次用时为：11.9476
+
+地点：公司
+情况：random_scene with bvh
+sample: 10
+本次用时为：0.826504
+
+地点：公司
+情况：cornellbox with bvh
+sample: 10
+本次用时为：8.08783
+
+地点：公司
+情况：cornellbox no bvh
+sample: 10
+本次用时为：8.14974
+
+地点：公司
+情况：cornellbox no bvh
+sample: 10
+本次用时为：8.06602
+
+地点：公司
+情况：simple_light no bvh
+sample: 10
+本次用时为：0.610882
+
+地点：公司
+情况：simple_light no bvh
+sample: 10
+本次用时为：0.596622
+
+地点：公司
+情况：simple_light have bvh
+sample: 100
+本次用时为：5.16688
+
+地点：公司
+情况：simple_light no bvh
+sample: 100
+本次用时为：5.2278
+
+地点：公司
+情况：cornell_box no bvh？
+sample: 100
+本次用时为：5.20963
+
+地点：公司
+情况：cornell_box no bvh？
+sample: 100
+本次用时为：86.7224
+
+地点：公司
+情况：cornell_box have bvh？
+sample: 100
+本次用时为：94.5764
+

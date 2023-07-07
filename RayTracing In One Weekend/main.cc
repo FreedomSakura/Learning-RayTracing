@@ -84,6 +84,7 @@ hittable_list simple_light() {
     objects.add(make_shared<xy_rect>(3, 5, 1, 3, -2, difflight));
 
     return objects;
+    //return static_cast<hittable_list>(make_shared<bvh_node>(objects, 0, 1));
 }
 
 // 场景
@@ -148,6 +149,7 @@ hittable_list random_scene() {
 
     // 使用BVH！
     return static_cast<hittable_list>(make_shared<bvh_node>(world, 0, 1));
+    //return world;
 }
 
 hittable_list cornell_box() {
@@ -177,7 +179,8 @@ hittable_list cornell_box() {
     box2 = make_shared<translate>(box2, vec3(130, 0, 65));
     objects.add(box2);
 
-    return objects;
+    return static_cast<hittable_list>(make_shared<bvh_node>(objects, 0, 1));
+    //return objects;
 }
 
 int main() {
@@ -185,11 +188,11 @@ int main() {
     // Image
 
     //const auto aspect_ratio = 16.0 / 9.0;
-    const int image_width = 1000;
+    const int image_width = 500;
     //const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int image_height = 1000;
+    const int image_height = 500;
     const auto aspect_ratio = double(image_width) / image_height;
-    const int samples_per_pixel = 1000;
+    const int samples_per_pixel = 100;
     const int max_depth = 50;
 
     // World
@@ -249,17 +252,22 @@ int main() {
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<float> duration = end - start;
     std::ofstream outFile;
-    outFile.open("clock.txt", std::ios::out | std::ios::app);
-    outFile << "引入图像贴图" << std::endl;
-    outFile << "本次用时为：" << duration.count() << std::endl;
+    outFile.open("./output/clock.txt", std::ios::out | std::ios::app);
+
+    std::string place = "公司";
+    std::string status = "cornell_box have bvh？";
+
+    outFile << "地点：" << place << std::endl;
+    outFile << "情况：" << status << std::endl;
     outFile << "sample: " << samples_per_pixel << std::endl;
+    outFile << "本次用时为：" << duration.count() << std::endl;
     outFile << std::endl;
     outFile.close();
 
 
 
     // stride_btye = 一行的比特数
-    stbi_write_png("./output/cornellbox.png", image_width, image_height, 3, data, image_width * 3);
+    stbi_write_png("./output/test_bvh.png", image_width, image_height, 3, data, image_width * 3);
 
     delete[] color_ptr;
     delete[] data;
